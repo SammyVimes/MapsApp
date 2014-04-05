@@ -30,7 +30,7 @@ public class DijkstraFactory implements Factory {
 
     @Override
     public MapSearchAlgorithm getSearchAlgorithm() {
-        return new Dijkstra();
+        return new DijkstraAlgorithm();
     }
 
 }
