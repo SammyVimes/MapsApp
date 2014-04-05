@@ -8,6 +8,6 @@ import ru.elweb.mapsapp.core.map.Path;
  */
 public interface MapSearchAlgorithm {
 
-    Path findPath(final EltechMap map);
+    Path findPath(final EltechMap map, final int fromId, final int toId);
 
 }
