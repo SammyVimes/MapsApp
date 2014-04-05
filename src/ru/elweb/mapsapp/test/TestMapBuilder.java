@@ -1,5 +1,11 @@
 package ru.elweb.mapsapp.test;
 
-public class TestMapBuilder {
+import ru.elweb.mapsapp.core.map.EltechMap;
+
+public final class TestMapBuilder {
+	
+	EltechMap newEltechMap() {
+		return null;
+	}
 	
 }

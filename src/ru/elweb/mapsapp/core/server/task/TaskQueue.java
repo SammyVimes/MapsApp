@@ -17,11 +17,11 @@ public class TaskQueue {
 		return instance;
 	}
 	
-	public void addTask(final Task task) {
+	public synchronized void addTask(final Task task) {
 		queue.add(task);
 	}
 	
-	public Task getTask() {
+	public synchronized Task getTask() {
 		return queue.element();
 	}
 	

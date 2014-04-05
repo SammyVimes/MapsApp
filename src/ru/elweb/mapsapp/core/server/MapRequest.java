@@ -5,5 +5,4 @@ public interface MapRequest {
 	int getFromID();
 	int getToID();
 	
-	
 }
