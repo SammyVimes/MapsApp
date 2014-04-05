@@ -1,11 +1,6 @@
 package ru.elweb.mapsapp.core;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Cache<K, V> implements Map<K, V> {
 	

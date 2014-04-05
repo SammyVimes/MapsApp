@@ -4,7 +4,7 @@ import ru.elweb.mapsapp.core.algorithm.MapSearchAlgorithm;
 import ru.elweb.mapsapp.core.map.EltechMap;
 
 /**
- * Created by Администратор on 05.04.2014.
+ * Created by  Semyon Danilov on 05.04.2014.
  */
 public class AlgorithmTest implements Test {
 
@@ -18,7 +18,7 @@ public class AlgorithmTest implements Test {
 
     @Override
     public void run() {
-
+        algorithm.findPath(map);
     }
-    
+
 }

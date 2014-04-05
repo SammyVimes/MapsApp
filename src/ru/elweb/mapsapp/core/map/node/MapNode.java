@@ -6,7 +6,7 @@ import java.util.List;
 public class MapNode {
 
 	protected int id;
-    protected List<MapNode> linkedNodes;
+    protected List<Branch> branches;
     protected boolean DEAD_END;
 
     /**
@@ -14,15 +14,15 @@ public class MapNode {
      * @param id
      * @param node
      */
-	public MapNode(final int id, final MapNode node) {
+	public MapNode(final int id, final MapNode node, final int length) {
 		this(id, true);
-		linkedNodes = new LinkedList<>();
-		linkedNodes.add(node);
+        branches = new LinkedList<>();
+        branches.add(new Branch(length, node));
 	}
 	
-	public MapNode(final int id, final List<MapNode> linkedNodes, final boolean DEAD_END) {
+	public MapNode(final int id, final List<Branch> branches, final boolean DEAD_END) {
 		this(id, DEAD_END);
-		this.linkedNodes = linkedNodes;
+		this.branches = branches;
 	}
 	
 	public MapNode(final int id, final boolean DEAD_END) {
