@@ -1,4 +1,4 @@
-package ru.elweb.mapsapp.core.map.node;
+package ru.elweb.mapsapp.core.algorithm.dijkstra;
 
 public class DijkstraData {
 

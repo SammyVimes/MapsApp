@@ -5,12 +5,15 @@ import java.util.List;
 
 public class MapNode {
 
-	ThreadLocal<DijkstraData> dijkstraData; 
-	
-	private int id;
-	private List<MapNode> linkedNodes;
-	private boolean DEAD_END;
-	
+	protected int id;
+    protected List<MapNode> linkedNodes;
+    protected boolean DEAD_END;
+
+    /**
+     * Creating MapNode with only one connected node (so, this means we creating a DEAD_END node)
+     * @param id
+     * @param node
+     */
 	public MapNode(final int id, final MapNode node) {
 		this(id, true);
 		linkedNodes = new LinkedList<>();
@@ -25,7 +28,6 @@ public class MapNode {
 	public MapNode(final int id, final boolean DEAD_END) {
 		this.id = id;
 		this.DEAD_END = DEAD_END;
-		this.dijkstraData = new ThreadLocal<>();
 	}
 	
 }
