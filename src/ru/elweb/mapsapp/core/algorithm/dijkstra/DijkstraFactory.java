@@ -19,12 +19,12 @@ public class DijkstraFactory implements Factory {
     }
 
     @Override
-    public MapNode newMapNode(int id, List<Branch> linkedNodes, boolean DEAD_END) {
+    public MapNode newMapNode(final int id, final List<Branch> linkedNodes, final boolean DEAD_END) {
         return new DijkstraMapNode(id, linkedNodes, DEAD_END);
     }
 
     @Override
-    public MapNode newMapNode(int id, boolean DEAD_END) {
+    public MapNode newMapNode(final int id, final boolean DEAD_END) {
         return new DijkstraMapNode(id, DEAD_END);
     }
 

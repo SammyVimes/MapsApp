@@ -16,7 +16,6 @@ public class MapNode {
      */
 	public MapNode(final int id, final MapNode node, final int length) {
 		this(id, true);
-        branches = new LinkedList<>();
         branches.add(new Branch(length, node));
 	}
 	
@@ -28,6 +27,20 @@ public class MapNode {
 	public MapNode(final int id, final boolean DEAD_END) {
 		this.id = id;
 		this.DEAD_END = DEAD_END;
+        branches = new LinkedList<>();
 	}
+
+    public int getId() {
+        return id;
+    }
+
+    //TODO: checking for duplicate and type matching
+    public void addBranch(final Branch branch) {
+        branches.add(branch);
+    }
+
+    public List<Branch> getBranches() {
+        return branches;
+    }
 	
 }

@@ -13,4 +13,12 @@ public class Branch {
         this.node = node;
     }
 
+    public MapNode getNode() {
+        return node;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
 }

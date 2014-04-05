@@ -5,7 +5,7 @@ import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraData;
 import java.util.List;
 
 /**
- * Created by Администратор on 05.04.2014.
+ * Created by Semyon Danilov on 05.04.2014.
  */
 public class DijkstraMapNode extends MapNode {
 
@@ -13,6 +13,7 @@ public class DijkstraMapNode extends MapNode {
 
     public DijkstraMapNode(final int id, final boolean DEAD_END) {
         super(id, DEAD_END);
+        dijkstraData = new DisjkstraThreadLocal(); //because in the end below constructors calls this constructor
     }
 
     public DijkstraMapNode(final int id, final List<Branch> branches, final boolean DEAD_END) {
@@ -21,7 +22,19 @@ public class DijkstraMapNode extends MapNode {
 
     public DijkstraMapNode(int id, MapNode node, final int length) {
         super(id, node, length);
-        dijkstraData = new ThreadLocal<>(); //because in the end above constructors calls this constructor
+    }
+
+    public DijkstraData getDijkstraData() {
+        return dijkstraData.get();
+    }
+
+    private class DisjkstraThreadLocal extends ThreadLocal<DijkstraData> {
+
+        @Override
+        protected DijkstraData initialValue() {
+            return new DijkstraData();
+        }
+
     }
 
 }
