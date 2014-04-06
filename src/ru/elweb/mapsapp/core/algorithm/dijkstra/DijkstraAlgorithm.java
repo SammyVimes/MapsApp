@@ -48,6 +48,9 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             }
             currentNodeData.flag = true;
             path.addNode(currentNode);
+            if (currentNode.getId() == toId) { //current node is desired and also is finished
+                break;
+            }
             currentNode = nextCurrentNode;
         }
         return path;
