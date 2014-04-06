@@ -20,8 +20,11 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
     @MethodDescription(link = "http://ru.wikipedia.org/wiki/%C0%EB%E3%EE%F0%E8%F2%EC_%C4%E5%E9%EA%F1%F2%F0%FB")
     public Path findPath(final EltechMap map, final int fromId, final int toId) {
         DijkstraMapNode currentNode = (DijkstraMapNode) map.getNodeById(fromId);
-        Path path = new Path();
+        DijkstraMapNode startNode = currentNode;
+        Path currentPath = new Path();
+        Path returnPath = new Path();
         currentNode.getDijkstraData().pathLen = 0;
+        DijkstraMapNode finalNode = null;
         while (true) {
             if (currentNode == null) {
                 break;
@@ -47,13 +50,33 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
                 }
             }
             currentNodeData.flag = true;
-            path.addNode(currentNode);
+            currentPath.addNode(currentNode);
             if (currentNode.getId() == toId) { //current node is desired and also is finished
-                break;
+                finalNode = currentNode;
             }
             currentNode = nextCurrentNode;
         }
-        return path;
+
+        //now forming a path from an end to beginning
+        if (finalNode == null) {
+            return null;
+        }
+        currentNode = finalNode;
+        returnPath.addNode(finalNode);
+        while (currentNode.getId() != fromId) {
+            List<Branch> branches = currentNode.getBranches();
+            long curPathLen = currentNode.getDijkstraData().pathLen;
+            for (Branch branch : branches) {
+                DijkstraMapNode node = (DijkstraMapNode) branch.getNode();
+                DijkstraData data = node.getDijkstraData();
+                if (curPathLen - branch.getLength() == data.pathLen) {
+                    currentNode = node;
+                    break;
+                }
+            }
+            returnPath.addNode(currentNode);
+        }
+        return returnPath;
     }
 
 }

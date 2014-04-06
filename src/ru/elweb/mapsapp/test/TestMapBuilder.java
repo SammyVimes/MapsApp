@@ -2,9 +2,9 @@ package ru.elweb.mapsapp.test;
 
 import ru.elweb.mapsapp.core.algorithm.Factory;
 import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraFactory;
+import ru.elweb.mapsapp.core.annotation.TestImage;
 import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.map.node.Branch;
-import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
 import ru.elweb.mapsapp.core.map.node.MapNode;
 
 public final class TestMapBuilder {
@@ -15,6 +15,7 @@ public final class TestMapBuilder {
 		return null;
 	}
 
+    @TestImage("http://upload.wikimedia.org/wikipedia/commons/5/55/Dijkstra_graph3.PNG")
     static EltechMap buildSimpleMap() {
         EltechMap map = new EltechMap();
         MapNode node1 = factory.newMapNode(1, false);
