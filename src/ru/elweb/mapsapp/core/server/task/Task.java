@@ -5,6 +5,8 @@ import ru.elweb.mapsapp.core.server.MapRequest;
 
 public interface Task {
 
+    boolean extractRequest();
+
 	Client getClient();
 	
 	MapRequest getRequest();

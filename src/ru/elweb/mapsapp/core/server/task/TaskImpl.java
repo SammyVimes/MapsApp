@@ -8,10 +8,13 @@ public class TaskImpl implements Task {
 	private Client client;
 	private MapRequest mapRequest;
 	
-	public TaskImpl(final Client client, final MapRequest mapRequest) {
+	public TaskImpl(final Client client) {
 		this.client = client;
-		this.mapRequest = mapRequest;
 	}
+
+    public boolean extractRequest() {
+        return false;
+    }
 
 	@Override
 	public Client getClient() {

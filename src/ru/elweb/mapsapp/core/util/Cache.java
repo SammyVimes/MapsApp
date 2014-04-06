@@ -1,4 +1,4 @@
-package ru.elweb.mapsapp.core;
+package ru.elweb.mapsapp.core.util;
 
 import java.util.*;
 

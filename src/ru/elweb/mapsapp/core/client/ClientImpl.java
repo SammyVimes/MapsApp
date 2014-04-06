@@ -3,7 +3,15 @@ package ru.elweb.mapsapp.core.client;
 import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.server.MapRequest;
 
+import java.net.Socket;
+
 public class ClientImpl implements Client {
+
+    private Socket clientSocket;
+
+    public ClientImpl(final Socket socket) {
+        this.clientSocket = socket;
+    }
 
 	@Override
 	public boolean sendData(Path path) {
