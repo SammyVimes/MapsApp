@@ -26,4 +26,8 @@ public class Path {
         }
     }
 
+    public List<MapNode> getNodes() {
+        return nodes;
+    }
+
 }

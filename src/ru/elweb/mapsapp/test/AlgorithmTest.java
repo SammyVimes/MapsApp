@@ -2,6 +2,11 @@ package ru.elweb.mapsapp.test;
 
 import ru.elweb.mapsapp.core.algorithm.MapSearchAlgorithm;
 import ru.elweb.mapsapp.core.map.EltechMap;
+import ru.elweb.mapsapp.core.map.Path;
+import ru.elweb.mapsapp.core.map.node.MapNode;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by  Semyon Danilov on 05.04.2014.
@@ -23,7 +28,13 @@ public class AlgorithmTest implements Test {
 
     @Override
     public void run() {
-        algorithm.findPath(map, fromId, toId);
+        Path path = algorithm.findPath(map, fromId, toId);
+        List<MapNode> nodes = path.getNodes();
+        Collections.reverse(path.getNodes());
+        System.out.println("Finding path from " + fromId + " to " + toId);
+        for (final MapNode node : nodes) {
+            System.out.println("Node: " + node.getId());
+        }
     }
 
 }
