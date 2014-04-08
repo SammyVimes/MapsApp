@@ -26,6 +26,18 @@ public class Path {
         }
     }
 
+    @Override
+    public String toString() {
+        String out = "";
+        for (int i = nodes.size() - 1; i >= 0; i--) {
+            out += nodes.get(i).getId();
+            if (i != 0) {
+                out += " -> ";
+            }
+        }
+        return out;
+    }
+
     public List<MapNode> getNodes() {
         return nodes;
     }

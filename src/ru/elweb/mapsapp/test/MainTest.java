@@ -9,6 +9,7 @@ public class MainTest {
         EltechMap map = TestMapBuilder.buildSimpleMap();
         Test test = new AlgorithmTest(new DijkstraAlgorithm(), map, 1, 5);
         test.run();
+        (new ServerClientTest()).run();
 	}
 	
 }
