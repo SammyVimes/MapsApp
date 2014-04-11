@@ -16,7 +16,7 @@ public final class TestMapBuilder {
 	}
 
     @TestImage("http://upload.wikimedia.org/wikipedia/commons/5/55/Dijkstra_graph3.PNG")
-    static EltechMap buildSimpleMap() {
+    public static EltechMap buildSimpleMap() {
         EltechMap map = new EltechMap();
         MapNode node1 = factory.newMapNode(1, false);
         MapNode node2 = factory.newMapNode(2, false);

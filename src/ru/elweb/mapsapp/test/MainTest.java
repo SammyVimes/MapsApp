@@ -2,6 +2,7 @@ package ru.elweb.mapsapp.test;
 
 import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraAlgorithm;
 import ru.elweb.mapsapp.core.map.EltechMap;
+import ru.elweb.mapsapp.test.graphics.GraphFrameTest;
 
 public class MainTest {
 	
@@ -10,6 +11,7 @@ public class MainTest {
         Test test = new AlgorithmTest(new DijkstraAlgorithm(), map, 1, 5);
         test.run();
         (new ServerClientTest()).run();
+        (new GraphFrameTest()).run();
 	}
 	
 }
