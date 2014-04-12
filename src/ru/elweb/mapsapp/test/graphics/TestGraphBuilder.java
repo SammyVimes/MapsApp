@@ -12,7 +12,7 @@ public final class TestGraphBuilder {
     public static Graph createGraph() {
         Graph graph = new Graph();
         Random random = new Random();
-        int n = 5;
+        int n = 10;
         List<Vertex> vertices = new ArrayList<Vertex>();
         List<Edge> edges = new ArrayList<Edge>();
         for (int i = 0; i < n; i++) {
