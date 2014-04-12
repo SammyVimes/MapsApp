@@ -95,7 +95,7 @@ public class GraphFrameTest implements Test {
             graphics.setColor(Color.RED);
             for (int i = 0; i < graph.getVerticesQuantity(); i++) {
                 Vertex v = vertices.get(i);
-                graphics.fillOval((int) v.x, (int)  v.y, diameter, diameter);
+                graphics.fillOval((int) v.x, (int) v.y, diameter, diameter);
             }
         }
 
@@ -123,7 +123,7 @@ public class GraphFrameTest implements Test {
 
         private Vertex getPressedVertex(final int x, final int y) {
             for (Vertex v : graph.getVertices()) {
-                if ((x > v.x && x < v.x + diameter) || (y < v.y && y > v.y - diameter)) {
+                if ((x > v.x && x < v.x + diameter) && (y > v.y && y < v.y + diameter)) {
                     return v;
                 }
             }
@@ -131,15 +131,10 @@ public class GraphFrameTest implements Test {
         }
 
         Vertex pressed = null;
-
-        @Override
-        public void mouseDragged(final MouseEvent e) {
-            if (pressed == null) {
-                return;
-            }
-            pressed.x = e.getX();
-            pressed.y = e.getY();
-        }
+        int initPressX = 0;
+        int initPressY = 0;
+        int initVX = 0;
+        int initVY = 0;
 
         @Override
         public void mouseMoved(final MouseEvent e) {
@@ -158,6 +153,21 @@ public class GraphFrameTest implements Test {
             }
             v.isDragged = true;
             pressed = v;
+            initPressX = e.getX();
+            initPressY = e.getY();
+            initVX = (int) v.x;
+            initVY = (int) v.y;
+        }
+
+        @Override
+        public void mouseDragged(final MouseEvent e) {
+            if (pressed == null) {
+                return;
+            }
+            int newX = e.getX() - initPressX;
+            int newY = e.getY() - initPressY;
+            pressed.x = initVX + newX;
+            pressed.y = initVY + newY;
         }
 
         @Override
