@@ -12,7 +12,7 @@ public final class TestGraphBuilder {
     public static Graph createGraph() {
         Graph graph = new Graph();
         Random random = new Random();
-        int n = 10;
+        int n = 15;
         List<Vertex> vertices = new ArrayList<Vertex>();
         List<Edge> edges = new ArrayList<Edge>();
         for (int i = 0; i < n; i++) {
@@ -22,7 +22,7 @@ public final class TestGraphBuilder {
             vertices.add(vertex);
             vertex.id = i;
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 2 * n; i++) {
             int a = (int) (random.nextFloat() * n);
             int b = (int) (random.nextFloat() * n);
             if (vertices.size() <= a || vertices.size() <= b) {

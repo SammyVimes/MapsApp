@@ -82,11 +82,7 @@ public class GraphFrameTest implements Test {
             List<Edge> edges = graph.getEdges();
             int verticesQuantity = graph.getVerticesQuantity();
             int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
-            graphics.setColor(Color.RED);
-            for (int i = 0; i < graph.getVerticesQuantity(); i++) {
-                Vertex v = vertices.get(i);
-                graphics.fillOval((int) v.x, (int)  v.y, diameter, diameter);
-            }
+            graphics.setColor(Color.BLACK);
             for (int i = 0; i < edges.size(); i++) {
                 Edge edge = edges.get(i);
                 Vertex v = edge.first;
@@ -95,6 +91,11 @@ public class GraphFrameTest implements Test {
                                  (int) v.y + (diameter/2),
                                  (int) u.x + (diameter/2),
                                  (int) u.y + (diameter/2));
+            }
+            graphics.setColor(Color.RED);
+            for (int i = 0; i < graph.getVerticesQuantity(); i++) {
+                Vertex v = vertices.get(i);
+                graphics.fillOval((int) v.x, (int)  v.y, diameter, diameter);
             }
         }
 
