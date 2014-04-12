@@ -8,6 +8,8 @@ public class Vertex {
     protected double x = 0;
     protected double y = 0;
 
+    protected int id = 0;
+
     //represents force of the "net" towards other points
     protected double netForceX = 0;
     protected double netForceY = 0;

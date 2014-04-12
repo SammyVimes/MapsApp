@@ -20,6 +20,7 @@ public final class TestGraphBuilder {
             vertex.x = (int) (200 + (random.nextFloat() * 300));
             vertex.y = (int) (100 + (random.nextFloat() * 200));
             vertices.add(vertex);
+            vertex.id = i;
         }
         for (int i = 0; i < 20; i++) {
             int a = (int) (random.nextFloat() * n);

@@ -52,15 +52,19 @@ public class GraphFrameTest implements Test {
                 }
                 for (int j = 0; j < edgesQuantity; j++) {
                     Edge edge = edges.get(j);
-                    if (edge.first != v) {
+                    Vertex u = null;
+                    if (edge.first == v) {
+                        u = edge.second;
+                    } else if (edge.second == v) {
+                        u = edge.first;
+                    } else {
                         continue;
                     }
-                    Vertex u = edge.second;
                     v.netForceX += 0.06 * (u.x - v.x);
                     v.netForceY += 0.06 * (u.y - v.y);
                 }
-                v.velocityX = (v.velocityX + v.netForceX) * 0.05;
-                v.velocityY= (v.velocityY + v.netForceY) * 0.05;
+                v.velocityX = (v.velocityX + v.netForceX) * 0.85;
+                v.velocityY= (v.velocityY + v.netForceY) * 0.85;
             }
             for (int i = 0; i < verticesQuantity; i++) {
                 Vertex vertex = vertices.get(i);
