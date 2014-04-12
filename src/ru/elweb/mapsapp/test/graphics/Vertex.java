@@ -5,12 +5,12 @@ package ru.elweb.mapsapp.test.graphics;
  */
 public class Vertex {
 
-    protected int x = 0;
-    protected int y = 0;
+    protected double x = 0;
+    protected double y = 0;
 
     //represents force of the "net" towards other points
-    protected int netForceX = 0;
-    protected int netForceY = 0;
+    protected double netForceX = 0;
+    protected double netForceY = 0;
 
     protected double velocityX = 0.0f;
     protected double velocityY = 0.0f;

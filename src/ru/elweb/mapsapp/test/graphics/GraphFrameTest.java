@@ -4,8 +4,9 @@ import ru.elweb.mapsapp.test.Test;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.List;
 
 /**
@@ -23,22 +24,13 @@ public class GraphFrameTest implements Test {
         });
     }
 
-    public static class GraphFrame extends JFrame {
+    public static class GraphFrame extends JFrame implements MouseListener, MouseMotionListener {
 
         private boolean needToUpdate = true;
         private Graph graph;
+        Timer updateTimer = null;
 
-        Timer updateTimer = new Timer(50, new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                paint(getGraphics());
-                if (needToUpdate) {
-                    updateTimer.restart();
-                }
-            }
-
-        });
+        private int diameter = 20;
 
         private void updateGraph() {
             List<Vertex> vertices = graph.getVertices();
@@ -46,29 +38,29 @@ public class GraphFrameTest implements Test {
             int verticesQuantity = graph.getVerticesQuantity();
             int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
             for (int i = 0; i < graph.getVerticesQuantity(); i++) {
-                Vertex vertex = vertices.get(i);
-                vertex.netForceX = 0;
-                vertex.netForceY = 0;
+                Vertex v = vertices.get(i);
+                v.netForceX = 0;
+                v.netForceY = 0;
                 for (int j = 0; j < verticesQuantity; j++) {
                     if (i == j) {
                         continue;
                     }
                     Vertex u = vertices.get(j);
-                    float rsq = ((vertex.x - u.x) * (vertex.x - u.x) + (vertex.y - u.y) * (vertex.y - u.y));
-                    vertex.netForceX += 200 * (vertex.x - u.x) / rsq;
-                    vertex.netForceY += 200 * (vertex.y - u.y) / rsq;
+                    double rsq = ((v.x - u.x) * (v.x - u.x) +(v.y - u.y) * (v.y - u.y));
+                    v.netForceX += (200 * (v.x - u.x)) / rsq;
+                    v.netForceY += (200 * (v.y - u.y)) / rsq;
                 }
                 for (int j = 0; j < edgesQuantity; j++) {
                     Edge edge = edges.get(j);
-                    if (edge.first != vertex) {
+                    if (edge.first != v) {
                         continue;
                     }
                     Vertex u = edge.second;
-                    vertex.netForceX += (u.x - vertex.x) * 0.06;
-                    vertex.netForceY += (u.y - vertex.y) * 0.06;
+                    v.netForceX += 0.06 * (u.x - v.x);
+                    v.netForceY += 0.06 * (u.y - v.y);
                 }
-                vertex.velocityX = (vertex.velocityX + vertex.netForceX) * 0.85;
-                vertex.velocityY= (vertex.velocityY + vertex.netForceY) * 0.85;
+                v.velocityX = (v.velocityX + v.netForceX) * 0.05;
+                v.velocityY= (v.velocityY + v.netForceY) * 0.05;
             }
             for (int i = 0; i < verticesQuantity; i++) {
                 Vertex vertex = vertices.get(i);
@@ -86,9 +78,19 @@ public class GraphFrameTest implements Test {
             List<Edge> edges = graph.getEdges();
             int verticesQuantity = graph.getVerticesQuantity();
             int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
+            graphics.setColor(Color.RED);
             for (int i = 0; i < graph.getVerticesQuantity(); i++) {
                 Vertex v = vertices.get(i);
-                graphics.drawOval(v.x, v.y, 20, 20);
+                graphics.fillOval((int) v.x, (int)  v.y, diameter, diameter);
+            }
+            for (int i = 0; i < edges.size(); i++) {
+                Edge edge = edges.get(i);
+                Vertex v = edge.first;
+                Vertex u = edge.second;
+                graphics.drawLine((int) v.x + (diameter/2),
+                                 (int) v.y + (diameter/2),
+                                 (int) u.x + (diameter/2),
+                                 (int) u.y + (diameter/2));
             }
         }
 
@@ -98,21 +100,79 @@ public class GraphFrameTest implements Test {
             redraw(g);
         }
 
-        private Canvas canvas;
-
         public GraphFrame(final Graph graph) {
             super("Graph Frame");
+            updateTimer = new Timer(50, e -> {
+                paint(getGraphics());
+                if (needToUpdate) {
+                    updateTimer.restart();
+                }
+            });
             this.graph = graph;
-//            this.canvas = new Canvas();
-//            Dimension size = new Dimension (500, 500);
-//            this.canvas.setPreferredSize(size);
-//            this.add(canvas);
             this.setPreferredSize(new Dimension (500, 500));
             this.pack();
             updateTimer.start();
+            addMouseListener(this);
+            addMouseMotionListener(this);
         }
 
+        private Vertex getPressedVertex(final int x, final int y) {
+            for (Vertex v : graph.getVertices()) {
+                if ((x > v.x && x < v.x + diameter) || (y < v.y && y > v.y - diameter)) {
+                    return v;
+                }
+            }
+            return null;
+        }
 
+        Vertex pressed = null;
+
+        @Override
+        public void mouseDragged(final MouseEvent e) {
+            if (pressed == null) {
+                return;
+            }
+            pressed.x = e.getX();
+            pressed.y = e.getY();
+        }
+
+        @Override
+        public void mouseMoved(final MouseEvent e) {
+        }
+
+        @Override
+        public void mouseClicked(final MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(final MouseEvent e) {
+            Vertex v = getPressedVertex(e.getX(), e.getY());
+            if (v == null) {
+                return;
+            }
+            v.isDragged = true;
+            pressed = v;
+        }
+
+        @Override
+        public void mouseReleased(final MouseEvent e) {
+            if (pressed == null) {
+                return;
+            }
+            pressed.isDragged = false;
+            pressed = null;
+        }
+
+        @Override
+        public void mouseEntered(final MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(final MouseEvent e) {
+
+        }
     }
 
 }
