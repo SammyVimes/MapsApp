@@ -32,6 +32,21 @@ public class GraphFrameTest implements Test {
 
         private int diameter = 20;
 
+        @Override
+        public void repaint() {
+            super.repaint();
+        }
+
+        @Override
+        public void repaint(final int x, final int y, final int width, final int height) {
+            super.repaint(x, y, width, height);
+        }
+
+        @Override
+        public void repaint(final long time, final int x, final int y, final int width, final int height) {
+            super.repaint(time, x, y, width, height);
+        }
+
         private void updateGraph() {
             List<Vertex> vertices = graph.getVertices();
             List<Edge> edges = graph.getEdges();
@@ -77,38 +92,10 @@ public class GraphFrameTest implements Test {
             }
         }
 
-        private void redraw(Graphics graphics) {
-            List<Vertex> vertices = graph.getVertices();
-            List<Edge> edges = graph.getEdges();
-            int verticesQuantity = graph.getVerticesQuantity();
-            int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
-            graphics.setColor(Color.BLACK);
-            for (int i = 0; i < edges.size(); i++) {
-                Edge edge = edges.get(i);
-                Vertex v = edge.first;
-                Vertex u = edge.second;
-                graphics.drawLine((int) v.x + (diameter/2),
-                                 (int) v.y + (diameter/2),
-                                 (int) u.x + (diameter/2),
-                                 (int) u.y + (diameter/2));
-            }
-            graphics.setColor(Color.RED);
-            for (int i = 0; i < graph.getVerticesQuantity(); i++) {
-                Vertex v = vertices.get(i);
-                graphics.fillOval((int) v.x, (int) v.y, diameter, diameter);
-            }
-        }
-
-        public void paint(Graphics g) {
-            super.paint(g);
-            updateGraph();
-            redraw(g);
-        }
-
         public GraphFrame(final Graph graph) {
             super("Graph Frame");
             updateTimer = new Timer(50, e -> {
-                paint(getGraphics());
+                repaint();
                 if (needToUpdate) {
                     updateTimer.restart();
                 }
@@ -116,9 +103,11 @@ public class GraphFrameTest implements Test {
             this.graph = graph;
             this.setPreferredSize(new Dimension (500, 500));
             this.pack();
+            TestPanel graphPanel = new TestPanel();
+            graphPanel.graphics = getGraphics();
+            graphPanel.setVisible(true);
+            this.add(graphPanel);
             updateTimer.start();
-            addMouseListener(this);
-            addMouseMotionListener(this);
         }
 
         private Vertex getPressedVertex(final int x, final int y) {
@@ -128,6 +117,46 @@ public class GraphFrameTest implements Test {
                 }
             }
             return null;
+        }
+
+        class TestPanel extends JPanel {
+
+            protected Graphics graphics;
+
+            public TestPanel() {
+                addMouseListener(GraphFrame.this);
+                addMouseMotionListener(GraphFrame.this);
+            }
+
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                updateGraph();
+                redraw(g);
+            }
+
+            private void redraw(Graphics graphics) {
+                List<Vertex> vertices = graph.getVertices();
+                List<Edge> edges = graph.getEdges();
+                int verticesQuantity = graph.getVerticesQuantity();
+                int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
+                graphics.setColor(Color.BLACK);
+                for (int i = 0; i < edges.size(); i++) {
+                    Edge edge = edges.get(i);
+                    Vertex v = edge.first;
+                    Vertex u = edge.second;
+                    graphics.drawLine((int) v.x + (diameter/2),
+                            (int) v.y + (diameter/2),
+                            (int) u.x + (diameter/2),
+                            (int) u.y + (diameter/2));
+                }
+                graphics.setColor(Color.RED);
+                for (int i = 0; i < graph.getVerticesQuantity(); i++) {
+                    Vertex v = vertices.get(i);
+                    graphics.fillOval((int) v.x, (int) v.y, diameter, diameter);
+                }
+            }
+
         }
 
         Vertex pressed = null;
