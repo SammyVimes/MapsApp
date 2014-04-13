@@ -140,15 +140,18 @@ public class GraphFrameTest implements Test {
                 List<Edge> edges = graph.getEdges();
                 int verticesQuantity = graph.getVerticesQuantity();
                 int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
-                graphics.setColor(Color.BLACK);
-                for (int i = 0; i < edges.size(); i++) {
-                    Edge edge = edges.get(i);
+                for (Edge edge : edges) {
                     Vertex v = edge.first;
                     Vertex u = edge.second;
-                    graphics.drawLine((int) v.x + (diameter/2),
-                            (int) v.y + (diameter/2),
-                            (int) u.x + (diameter/2),
-                            (int) u.y + (diameter/2));
+                    if (edge.checked) {
+                        graphics.setColor(Color.RED);
+                    } else {
+                        graphics.setColor(Color.BLACK);
+                    }
+                    graphics.drawLine((int) v.x + (diameter / 2),
+                            (int) v.y + (diameter / 2),
+                            (int) u.x + (diameter / 2),
+                            (int) u.y + (diameter / 2));
                 }
                 graphics.setColor(Color.RED);
                 for (int i = 0; i < graph.getVerticesQuantity(); i++) {

@@ -8,6 +8,8 @@ public class Edge {
     protected Vertex first;
     protected Vertex second;
 
+    protected boolean checked = false;
+
     protected int weight;
 
 }
