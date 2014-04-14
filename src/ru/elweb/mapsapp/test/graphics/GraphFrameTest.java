@@ -24,6 +24,7 @@ public class GraphFrameTest implements Test {
         });
     }
 
+    //TODO: add method to insert graph with path and make it synchronized
     public static class GraphFrame extends JFrame implements MouseListener, MouseMotionListener {
 
         private boolean needToUpdate = true;
@@ -153,10 +154,14 @@ public class GraphFrameTest implements Test {
                             (int) u.x + (diameter / 2),
                             (int) u.y + (diameter / 2));
                 }
-                graphics.setColor(Color.RED);
                 for (int i = 0; i < graph.getVerticesQuantity(); i++) {
                     Vertex v = vertices.get(i);
+                    graphics.setColor(Color.RED);
                     graphics.fillOval((int) v.x, (int) v.y, diameter, diameter);
+                    graphics.setColor(Color.BLACK);
+                    String id = ("" + v.id);
+                    char[] chars = id.toCharArray();
+                    graphics.drawChars(chars, 0, id.length(), (int) v.x, (int) v.y);
                 }
             }
 
