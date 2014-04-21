@@ -1,6 +1,13 @@
 package ru.elweb.mapsapp.test.graphics;
 
+import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraAlgorithm;
+import ru.elweb.mapsapp.core.map.EltechMap;
+import ru.elweb.mapsapp.core.map.Path;
+import ru.elweb.mapsapp.core.map.node.MapNode;
+import ru.elweb.mapsapp.core.server.MapRequest;
+import ru.elweb.mapsapp.core.server.MapRequestImpl;
 import ru.elweb.mapsapp.test.Test;
+import ru.elweb.mapsapp.test.TestMapBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,9 +26,34 @@ public class GraphFrameTest implements Test {
     @Override
     public void run() {
         SwingUtilities.invokeLater(() -> {
-            frame = new GraphFrame(TestGraphBuilder.createGraph());
+            EltechMap map = TestMapBuilder.buildSimpleMap();
+            frame = new GraphFrame(Graph.fromEltechMap(map));
             frame.setVisible(true);
+            MapRequest mapRequest = new MapRequestImpl(1, 6);
+            PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, frame);
+            pathFindingThread.start();
         });
+    }
+
+    private class PathFindingThread extends Thread {
+
+        private EltechMap map = null;
+        private MapRequest mapRequest = null;
+        private GraphFrame frame = null;
+
+
+        public PathFindingThread(final EltechMap map, final MapRequest mapRequest, final GraphFrame frame) {
+            this.map = map;
+            this.mapRequest = mapRequest;
+            this.frame = frame;
+        }
+
+        @Override
+        public void run() {
+            DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
+            Path path = algorithm.findPath(map, mapRequest.getFromID(), mapRequest.getToID());
+            frame.addPath(path);
+        }
     }
 
     //TODO: add method to insert graph with path and make it synchronized
@@ -46,6 +78,21 @@ public class GraphFrameTest implements Test {
         @Override
         public void repaint(final long time, final int x, final int y, final int width, final int height) {
             super.repaint(time, x, y, width, height);
+        }
+
+        private synchronized void addPath(final Path path) {
+            List<MapNode> nodes = path.getNodes();
+            for (int i = 0; i < nodes.size() - 1; i++) {
+                MapNode first = nodes.get(i);
+                MapNode second = nodes.get(i + 1);
+                List<Edge> edgeList = graph.getEdges();
+                for (Edge edge : edgeList) {
+                    if ((edge.first.id == first.getId() && edge.second.id == second.getId())
+                            || (edge.first.id == second.getId() && edge.second.id == first.getId())) {
+                        edge.checked = true;
+                    }
+                }
+            }
         }
 
         private void updateGraph() {
@@ -132,8 +179,10 @@ public class GraphFrameTest implements Test {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                updateGraph();
-                redraw(g);
+                synchronized (GraphFrame.this) {
+                    updateGraph();
+                    redraw(g);
+                }
             }
 
             private void redraw(Graphics graphics) {
@@ -153,6 +202,23 @@ public class GraphFrameTest implements Test {
                             (int) v.y + (diameter / 2),
                             (int) u.x + (diameter / 2),
                             (int) u.y + (diameter / 2));
+                    int gX = (int) v.x;
+                    int mX = (int) u.x;
+                    int gY = (int) v.y;
+                    int mY = (int) u.y;
+                    if (mX > gX) {
+                        int tmp = gX;
+                        gX = mX;
+                        mX = tmp;
+                    }
+                    if (mY > gY) {
+                        int tmp = gY;
+                        gY = mY;
+                        mY = tmp;
+                    }
+                    String weight = edge.weight + "";
+                    char[] chars = weight.toCharArray();
+                    graphics.drawChars(chars, 0, weight.length(), mX + ((gX - mX) / 2), mY + ((gY - mY) / 2));
                 }
                 for (int i = 0; i < graph.getVerticesQuantity(); i++) {
                     Vertex v = vertices.get(i);
@@ -161,7 +227,7 @@ public class GraphFrameTest implements Test {
                     graphics.setColor(Color.BLACK);
                     String id = ("" + v.id);
                     char[] chars = id.toCharArray();
-                    graphics.drawChars(chars, 0, id.length(), (int) v.x, (int) v.y);
+                    graphics.drawChars(chars, 0, id.length(), (int) v.x + (diameter / 2) - 5, (int) v.y + (diameter / 2) + 5);
                 }
             }
 

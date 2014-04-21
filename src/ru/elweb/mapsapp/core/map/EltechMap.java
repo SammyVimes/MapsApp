@@ -17,6 +17,10 @@ public class EltechMap {
         this.nodes.add(node);
     }
 
+    public List<MapNode> getNodes() {
+        return nodes;
+    }
+
     public MapNode getNodeById(final int id) {
         for (MapNode node : nodes) {
             if (node.getId() == id) {

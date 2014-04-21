@@ -42,6 +42,7 @@ public final class TestGraphBuilder {
                 continue;
             }
             Edge e = new Edge();
+            e.weight = (int) (random.nextFloat() * 100);
             e.first = aV;
             e.second = bV;
             edges.add(e);
