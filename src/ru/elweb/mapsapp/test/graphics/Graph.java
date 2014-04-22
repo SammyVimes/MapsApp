@@ -43,6 +43,7 @@ public class Graph {
                 }
                 if (shouldCreateNewEdge) {
                     Edge edge = new Edge();
+                    edge.weight = branch.getLength();
                     edge.first = vertex;
                     edge.second = new Vertex();
                     edge.second.id = id2;

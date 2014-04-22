@@ -6,6 +6,7 @@ import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.map.node.Branch;
 import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
+import ru.elweb.mapsapp.core.map.node.MapNode;
 
 import java.util.List;
 
@@ -54,7 +55,25 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             if (currentNode.getId() == toId) { //current node is desired and also is finished
                 finalNode = currentNode;
             }
+            MapNode tmpNode = currentNode;
             currentNode = nextCurrentNode;
+            if (currentNode == null) {
+                List<MapNode> nodes = currentPath.getNodes();
+                for (int i = nodes.size() - 1; i >= 0; i--) {
+                    MapNode node = nodes.remove(i);
+                    List<Branch> branches = node.getBranches();
+                    for (Branch branch : branches) {
+                        DijkstraMapNode anotherNode = (DijkstraMapNode) branch.getNode();
+                        if (!anotherNode.getDijkstraData().flag) {
+                            currentNode = (DijkstraMapNode) node;
+                            break;
+                        }
+                    }
+                    if (currentNode != null) {
+                        break;
+                    }
+                }
+            }
         }
 
         //now forming a path from an end to beginning

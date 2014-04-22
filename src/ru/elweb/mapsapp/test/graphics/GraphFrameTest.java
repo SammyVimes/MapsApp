@@ -26,7 +26,7 @@ public class GraphFrameTest implements Test {
     @Override
     public void run() {
         SwingUtilities.invokeLater(() -> {
-            EltechMap map = TestMapBuilder.buildSimpleMap();
+            EltechMap map = TestMapBuilder.buildHardMap();
             frame = new GraphFrame(Graph.fromEltechMap(map));
             frame.setVisible(true);
             MapRequest mapRequest = new MapRequestImpl(1, 6);

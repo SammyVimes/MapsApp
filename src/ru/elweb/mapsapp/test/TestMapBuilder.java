@@ -5,7 +5,12 @@ import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraFactory;
 import ru.elweb.mapsapp.core.annotation.TestImage;
 import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.map.node.Branch;
+import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
 import ru.elweb.mapsapp.core.map.node.MapNode;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public final class TestMapBuilder {
 
@@ -66,6 +71,50 @@ public final class TestMapBuilder {
         map.addNode(node4);
         map.addNode(node5);
         map.addNode(node6);
+        return map;
+    }
+
+    public static EltechMap buildHardMap() {
+        EltechMap map = new EltechMap();
+        Random random = new Random();
+        List<MapNode> nodes = new LinkedList<>();
+        int n = 15;
+        for (int i = 0; i < n; i++) {
+            MapNode node = new DijkstraMapNode(i, false);
+            nodes.add(node);
+            map.addNode(node);
+        }
+        for (int i = 0; i < 2 * n; i++) {
+            int a = (int) (random.nextFloat() * n);
+            int b = (int) (random.nextFloat() * n);
+            if (nodes.size() <= a || nodes.size() <= b) {
+                continue;
+            }
+            MapNode aNode = nodes.get(a);
+            MapNode bNode = nodes.get(b);
+            boolean shouldSkip = false;
+            List<Branch> branchesOfA = aNode.getBranches();
+            for (Branch branch : branchesOfA) {
+                if (branch.getNode() == bNode) {
+                    shouldSkip = true;
+                    break;
+                }
+            }
+            if (a == b || shouldSkip) {
+                continue;
+            }
+            int randLength = (int) (random.nextFloat() * 20);
+            Branch aToB = new Branch(randLength, bNode);
+            Branch bToA = new Branch(randLength, aNode);
+            aNode.addBranch(aToB);
+            bNode.addBranch(bToA);
+        }
+        for (MapNode node : nodes) {
+            int branchQuantity = node.getBranches().size();
+            if (branchQuantity < 2) {
+                node.setDEAD_END(true);
+            }
+        }
         return map;
     }
 	

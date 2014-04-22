@@ -42,5 +42,12 @@ public class MapNode {
     public List<Branch> getBranches() {
         return branches;
     }
-	
+
+    public boolean isDEAD_END() {
+        return DEAD_END;
+    }
+
+    public void setDEAD_END(final boolean DEAD_END) {
+        this.DEAD_END = DEAD_END;
+    }
 }
