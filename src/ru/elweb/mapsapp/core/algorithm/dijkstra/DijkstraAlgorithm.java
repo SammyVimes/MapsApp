@@ -95,6 +95,10 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             }
             returnPath.addNode(currentNode);
         }
+        for (MapNode node : map.getNodes()) {
+            DijkstraMapNode dijkstraMapNode = (DijkstraMapNode) node;
+            dijkstraMapNode.removeDijkstraData();
+        }
         return returnPath;
     }
 

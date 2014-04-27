@@ -28,6 +28,10 @@ public class DijkstraMapNode extends MapNode {
         return dijkstraData.get();
     }
 
+    public void removeDijkstraData() {
+        this.dijkstraData.remove();
+    }
+
     private class DisjkstraThreadLocal extends ThreadLocal<DijkstraData> {
 
         @Override

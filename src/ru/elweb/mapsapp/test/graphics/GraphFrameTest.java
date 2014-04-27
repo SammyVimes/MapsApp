@@ -27,15 +27,12 @@ public class GraphFrameTest implements Test {
     public void run() {
         SwingUtilities.invokeLater(() -> {
             EltechMap map = TestMapBuilder.buildHardMap();
-            frame = new GraphFrame(Graph.fromEltechMap(map));
+            frame = new GraphFrame(map, Graph.fromEltechMap(map));
             frame.setVisible(true);
-            MapRequest mapRequest = new MapRequestImpl(1, 6);
-            PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, frame);
-            pathFindingThread.start();
         });
     }
 
-    private class PathFindingThread extends Thread {
+    private static class PathFindingThread extends Thread {
 
         private EltechMap map = null;
         private MapRequest mapRequest = null;
@@ -56,14 +53,20 @@ public class GraphFrameTest implements Test {
         }
     }
 
-    //TODO: add method to insert graph with path and make it synchronized
     public static class GraphFrame extends JFrame implements MouseListener, MouseMotionListener {
 
         private boolean needToUpdate = true;
         private Graph graph;
+        private EltechMap map;
         Timer updateTimer = null;
 
         private int diameter = 20;
+
+        private JTextField from;
+        private JTextField to;
+        private JLabel jLabel1;
+        private JLabel status;
+
 
         @Override
         public void repaint() {
@@ -82,10 +85,13 @@ public class GraphFrameTest implements Test {
 
         private synchronized void addPath(final Path path) {
             List<MapNode> nodes = path.getNodes();
+            List<Edge> edgeList = graph.getEdges();
+            for (Edge edge : edgeList) {
+                edge.checked = false;
+            }
             for (int i = 0; i < nodes.size() - 1; i++) {
                 MapNode first = nodes.get(i);
                 MapNode second = nodes.get(i + 1);
-                List<Edge> edgeList = graph.getEdges();
                 for (Edge edge : edgeList) {
                     if ((edge.first.id == first.getId() && edge.second.id == second.getId())
                             || (edge.first.id == second.getId() && edge.second.id == first.getId())) {
@@ -140,7 +146,7 @@ public class GraphFrameTest implements Test {
             }
         }
 
-        public GraphFrame(final Graph graph) {
+        public GraphFrame(final EltechMap map, final Graph graph) {
             super("Graph Frame");
             updateTimer = new Timer(50, e -> {
                 repaint();
@@ -148,13 +154,10 @@ public class GraphFrameTest implements Test {
                     updateTimer.restart();
                 }
             });
+            this.map = map;
             this.graph = graph;
-            this.setPreferredSize(new Dimension (500, 500));
-            this.pack();
-            TestPanel graphPanel = new TestPanel();
-            graphPanel.graphics = getGraphics();
-            graphPanel.setVisible(true);
-            this.add(graphPanel);
+            this.setPreferredSize(new Dimension(500, 500));
+            init();
             updateTimer.start();
         }
 
@@ -174,6 +177,8 @@ public class GraphFrameTest implements Test {
             public TestPanel() {
                 addMouseListener(GraphFrame.this);
                 addMouseMotionListener(GraphFrame.this);
+                this.setBackground(Color.WHITE);
+                this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             }
 
             @Override
@@ -291,6 +296,95 @@ public class GraphFrameTest implements Test {
         public void mouseExited(final MouseEvent e) {
 
         }
+
+        private void init() {
+            from = new JTextField();
+            to = new JTextField();
+            status = new JLabel();
+            jLabel1 = new JLabel();
+            JButton button = new JButton("Найти путь");
+            button.addActionListener(e -> {
+                Integer fromId =  Integer.valueOf(from.getText());
+                Integer toId =  Integer.valueOf(to.getText());
+                MapRequest mapRequest = new MapRequestImpl(fromId, toId);
+                PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, this);
+                pathFindingThread.start();
+            });
+            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+            TestPanel graphPanel = new TestPanel();
+            graphPanel.graphics = getGraphics();
+            graphPanel.setVisible(true);
+
+            jLabel1.setText("Введите ID начальной точки и ID конечно:");
+
+            GroupLayout layout = new GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+
+            //Create a parallel group for the horizontal axis
+            GroupLayout.ParallelGroup hGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+
+            //Create a sequential and a parallel groups
+            GroupLayout.SequentialGroup h1 = layout.createSequentialGroup();
+            GroupLayout.ParallelGroup h2 = layout.createParallelGroup(GroupLayout.Alignment.TRAILING);
+
+            //Add a container gap to the sequential group h1
+            h1.addContainerGap();
+
+            //Add a scroll pane and a label to the parallel group h2
+            h2.addComponent(graphPanel, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE);
+            h2.addComponent(status, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 450, Short.MAX_VALUE);
+
+            //Create a sequential group h3
+            GroupLayout.SequentialGroup h3 = layout.createSequentialGroup();
+            h3.addComponent(jLabel1);
+            h3.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+            h3.addComponent(from, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE);
+            h3.addComponent(to, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE);
+            h3.addComponent(button, GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE);
+
+            //Add the group h3 to the group h2
+            h2.addGroup(h3);
+            //Add the group h2 to the group h1
+            h1.addGroup(h2);
+
+            h1.addContainerGap();
+
+            //Add the group h1 to the hGroup
+            hGroup.addGroup(GroupLayout.Alignment.TRAILING, h1);
+            //Create the horizontal group
+            layout.setHorizontalGroup(hGroup);
+
+
+            //Create a parallel group for the vertical axis
+            GroupLayout.ParallelGroup vGroup = layout.createParallelGroup(GroupLayout.Alignment.LEADING);
+            //Create a sequential group v1
+            GroupLayout.SequentialGroup v1 = layout.createSequentialGroup();
+            //Add a container gap to the sequential group v1
+            v1.addContainerGap();
+            //Create a parallel group v2
+            GroupLayout.ParallelGroup v2 = layout.createParallelGroup(GroupLayout.Alignment.BASELINE);
+            v2.addComponent(jLabel1);
+            v2.addComponent(from, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            v2.addComponent(to, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            v2.addComponent(button, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            //Add the group v2 tp the group v1
+            v1.addGroup(v2);
+            v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+            v1.addComponent(graphPanel, GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE);
+            v1.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED);
+            v1.addComponent(status);
+            v1.addContainerGap();
+
+            //Add the group v1 to the group vGroup
+            vGroup.addGroup(v1);
+            //Create the vertical group
+            layout.setVerticalGroup(vGroup);
+            pack();
+        }
+
     }
+
+
 
 }
