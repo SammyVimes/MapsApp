@@ -20,6 +20,7 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
     @Override
     @MethodDescription(link = "http://ru.wikipedia.org/wiki/%C0%EB%E3%EE%F0%E8%F2%EC_%C4%E5%E9%EA%F1%F2%F0%FB")
     public Path findPath(final EltechMap map, final int fromId, final int toId) {
+        Long startTime = System.nanoTime();
         DijkstraMapNode currentNode = (DijkstraMapNode) map.getNodeById(fromId);
         DijkstraMapNode startNode = currentNode;
         Path currentPath = new Path();
@@ -99,6 +100,8 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             DijkstraMapNode dijkstraMapNode = (DijkstraMapNode) node;
             dijkstraMapNode.removeDijkstraData();
         }
+        Long endTime = System.nanoTime();
+        System.out.println("Path finding time: " + (endTime - startTime) + " ns");
         return returnPath;
     }
 

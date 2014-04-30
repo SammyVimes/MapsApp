@@ -193,8 +193,6 @@ public class GraphFrameTest implements Test {
             private void redraw(Graphics graphics) {
                 List<Vertex> vertices = graph.getVertices();
                 List<Edge> edges = graph.getEdges();
-                int verticesQuantity = graph.getVerticesQuantity();
-                int edgesQuantity = graph.getEdges().size(); //todo: incapsulate
                 for (Edge edge : edges) {
                     Vertex v = edge.first;
                     Vertex u = edge.second;
@@ -235,7 +233,6 @@ public class GraphFrameTest implements Test {
                     graphics.drawChars(chars, 0, id.length(), (int) v.x + (diameter / 2) - 5, (int) v.y + (diameter / 2) + 5);
                 }
             }
-
         }
 
         Vertex pressed = null;
@@ -316,7 +313,7 @@ public class GraphFrameTest implements Test {
             graphPanel.graphics = getGraphics();
             graphPanel.setVisible(true);
 
-            jLabel1.setText("Введите ID начальной точки и ID конечно:");
+            jLabel1.setText("Введите ID начальной точки и ID конечной:");
 
             GroupLayout layout = new GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
