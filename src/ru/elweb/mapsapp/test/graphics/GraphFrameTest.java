@@ -25,11 +25,18 @@ public class GraphFrameTest implements Test {
 
     @Override
     public void run() {
-        SwingUtilities.invokeLater(() -> {
-            EltechMap map = TestMapBuilder.buildHardMap();
-            frame = new GraphFrame(map, Graph.fromEltechMap(map));
-            frame.setVisible(true);
-        });
+//        SwingUtilities.invokeLater(() -> {
+//            EltechMap map = TestMapBuilder.buildHardMap();
+//            frame = new GraphFrame(map, Graph.fromEltechMap(map));
+//            frame.setVisible(true);
+//        });
+        /**
+         * for test purposes
+         */
+        EltechMap map = TestMapBuilder.buildHardMap();
+
+        PathFindingThread pft = new PathFindingThread(map, new MapRequestImpl(6, 750), null);
+        pft.start();
     }
 
     private static class PathFindingThread extends Thread {
@@ -49,7 +56,8 @@ public class GraphFrameTest implements Test {
         public void run() {
             DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
             Path path = algorithm.findPath(map, mapRequest.getFromID(), mapRequest.getToID());
-            frame.addPath(path);
+            System.out.println("Path: " + path.toString());
+   //         frame.addPath(path);
         }
     }
 

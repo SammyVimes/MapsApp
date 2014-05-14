@@ -78,7 +78,7 @@ public final class TestMapBuilder {
         EltechMap map = new EltechMap();
         Random random = new Random();
         List<MapNode> nodes = new LinkedList<>();
-        int n = 50;
+        int n = 3000;
         for (int i = 0; i < n; i++) {
             MapNode node = new DijkstraMapNode(i, false);
             nodes.add(node);
@@ -103,7 +103,7 @@ public final class TestMapBuilder {
             if (a == b || shouldSkip) {
                 continue;
             }
-            int randLength = (int) (random.nextFloat() * 20);
+            int randLength = (int) (random.nextFloat() * 20 + 1);
             Branch aToB = new Branch(randLength, bNode);
             Branch bToA = new Branch(randLength, aNode);
             aNode.addBranch(aToB);

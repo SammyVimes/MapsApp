@@ -22,11 +22,10 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
     public Path findPath(final EltechMap map, final int fromId, final int toId) {
         Long startTime = System.nanoTime();
         DijkstraMapNode currentNode = (DijkstraMapNode) map.getNodeById(fromId);
-        DijkstraMapNode startNode = currentNode;
-        Path currentPath = new Path();
         Path returnPath = new Path();
         currentNode.getDijkstraData().pathLen = 0;
         DijkstraMapNode finalNode = null;
+        List<MapNode> nodes = map.getNodes();
         while (true) {
             if (currentNode == null) {
                 break;
@@ -34,8 +33,9 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             List<Branch> branchList = currentNode.getBranches();
             DijkstraData currentNodeData = currentNode.getDijkstraData();
             long currentNodePathLen = currentNodeData.pathLen;
-            long min = -1;
-            DijkstraMapNode nextCurrentNode = null; //this node should have smallest path
+            long min;
+            DijkstraMapNode nextCurrentNode = null; //this node should have smallest mark
+            //visiting neighbors
             for (Branch branch : branchList) {
                 DijkstraMapNode node = (DijkstraMapNode) branch.getNode();
                 DijkstraData dijkstraData = node.getDijkstraData();
@@ -43,46 +43,41 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
                     continue;
                 }
                 long nodePathLen = dijkstraData.pathLen;
+                //unfamiliar faces
                 if (nodePathLen == -1 || nodePathLen > currentNodePathLen + branch.getLength()) {
                     dijkstraData.pathLen = currentNodePathLen + branch.getLength();
                 }
-                if (min == -1 || min > dijkstraData.pathLen) {
+            }
+            min = -1;
+            //picking next node : the one with the smallest mark and flag set to false
+            for (MapNode _node : nodes) {
+                DijkstraMapNode node = (DijkstraMapNode) _node;
+                DijkstraData dijkstraData = node.getDijkstraData();
+                if (dijkstraData.flag) {
+                    continue;
+                }
+                long pathLen = dijkstraData.pathLen;
+                if (pathLen != -1 && ((pathLen < min) || (min == -1))) {
+                    min = pathLen;
                     nextCurrentNode = node;
-                    min = dijkstraData.pathLen;
                 }
             }
             currentNodeData.flag = true;
-            currentPath.addNode(currentNode);
-            if (currentNode.getId() == toId) { //current node is desired and also is finished
+            if (currentNode.getId() == toId) { //current node is a desired one
                 finalNode = currentNode;
             }
-            MapNode tmpNode = currentNode;
             currentNode = nextCurrentNode;
-            if (currentNode == null) {
-                List<MapNode> nodes = currentPath.getNodes();
-                for (int i = nodes.size() - 1; i >= 0; i--) {
-                    MapNode node = nodes.remove(i);
-                    List<Branch> branches = node.getBranches();
-                    for (Branch branch : branches) {
-                        DijkstraMapNode anotherNode = (DijkstraMapNode) branch.getNode();
-                        if (!anotherNode.getDijkstraData().flag) {
-                            currentNode = (DijkstraMapNode) node;
-                            break;
-                        }
-                    }
-                    if (currentNode != null) {
-                        break;
-                    }
-                }
-            }
         }
-
         //now forming a path from an end to beginning
         if (finalNode == null) {
             return null;
         }
         currentNode = finalNode;
         returnPath.addNode(finalNode);
+
+        Long endTime = System.nanoTime();
+        System.out.println("Marking time: " + (endTime - startTime) + " ns");
+
         while (currentNode.getId() != fromId) {
             List<Branch> branches = currentNode.getBranches();
             long curPathLen = currentNode.getDijkstraData().pathLen;
@@ -100,7 +95,7 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             DijkstraMapNode dijkstraMapNode = (DijkstraMapNode) node;
             dijkstraMapNode.removeDijkstraData();
         }
-        Long endTime = System.nanoTime();
+        endTime = System.nanoTime();
         System.out.println("Path finding time: " + (endTime - startTime) + " ns");
         return returnPath;
     }
