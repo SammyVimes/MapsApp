@@ -8,7 +8,9 @@ import ru.elweb.mapsapp.core.map.node.Branch;
 import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
 import ru.elweb.mapsapp.core.map.node.MapNode;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Semyon Danilov on 05.04.2014.
@@ -25,7 +27,7 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
         Path returnPath = new Path();
         currentNode.getDijkstraData().pathLen = 0;
         DijkstraMapNode finalNode = null;
-        List<MapNode> nodes = map.getNodes();
+        Set<MapNode> nodes = new HashSet<>();
         while (true) {
             if (currentNode == null) {
                 break;
@@ -42,6 +44,7 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
                 if (dijkstraData.flag) {
                     continue;
                 }
+                nodes.add(node);
                 long nodePathLen = dijkstraData.pathLen;
                 //unfamiliar faces
                 if (nodePathLen == -1 || nodePathLen > currentNodePathLen + branch.getLength()) {
@@ -61,6 +64,9 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
                     min = pathLen;
                     nextCurrentNode = node;
                 }
+            }
+            if (nextCurrentNode != null) {
+                nodes.remove(nextCurrentNode);
             }
             currentNodeData.flag = true;
             if (currentNode.getId() == toId) { //current node is a desired one
