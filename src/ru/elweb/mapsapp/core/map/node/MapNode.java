@@ -20,7 +20,8 @@ public class MapNode {
 	}
 	
 	public MapNode(final int id, final List<Branch> branches, final boolean DEAD_END) {
-		this(id, DEAD_END);
+        this.id = id;
+        this.DEAD_END = DEAD_END;
 		this.branches = branches;
 	}
 	

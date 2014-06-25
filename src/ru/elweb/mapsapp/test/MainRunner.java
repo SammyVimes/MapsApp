@@ -8,7 +8,11 @@ import ru.elweb.mapsapp.test.graphics.GraphFrameTest;
 public class MainRunner {
 
     private static Logger LOGGER = Logger.getLogger(MainRunner.class);
-	
+
+    /**
+     * Starter of tests
+     * @param args
+     */
 	public static void main(String[] args) {
         EltechMap map = TestMapBuilder.buildSimpleMap();
         Test test = new AlgorithmTest(new DijkstraAlgorithm(), map, 1, 5);

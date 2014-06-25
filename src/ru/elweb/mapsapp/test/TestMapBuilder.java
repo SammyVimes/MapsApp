@@ -80,7 +80,7 @@ public final class TestMapBuilder {
         List<MapNode> nodes = new LinkedList<>();
         int n = 100;
         for (int i = 0; i < n; i++) {
-            MapNode node = new DijkstraMapNode(i, false);
+            MapNode node = factory.newMapNode(i, false);
             nodes.add(node);
             map.addNode(node);
         }
