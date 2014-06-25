@@ -8,6 +8,11 @@ import java.util.Set;
 /**
  * Created by Semyon Danilov on 08.04.2014.
  */
+
+/**
+ * Because it's hell to simply parse string, I decided to parse it
+ * like they do in the Big Frameworks
+ */
 public class HttpQuery {
 
     private Map<String, String> queryParamsMap = null;

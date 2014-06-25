@@ -5,6 +5,10 @@ import ru.elweb.mapsapp.core.map.node.MapNode;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * It's not specifical for LETI, but still, this app is made for eltech so...
+ * This class has self-described methods
+ */
 public class EltechMap {
 
     private List<MapNode> nodes;

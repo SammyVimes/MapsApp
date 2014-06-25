@@ -42,6 +42,10 @@ public interface Factory {
      */
     MapNode newMapNode(final int id, final boolean DEAD_END);
 
+    /**
+     * Get associated algorithm
+     * @return search algorithm
+     */
     MapSearchAlgorithm getSearchAlgorithm();
 
 }

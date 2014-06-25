@@ -2,6 +2,13 @@ package ru.elweb.mapsapp.core.util;
 
 import java.util.*;
 
+/**
+ * Class for cacheing, it's self clearing
+ * ttl is time to live for a record
+ * ttc is time to clean for all the cache object
+ * @param <K> key capture
+ * @param <V> value capture
+ */
 public class Cache<K, V> implements Map<K, V> {
 	
 	public static final long DEFAULT_TTL = 600000; //10 минут, нормально

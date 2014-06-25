@@ -19,6 +19,10 @@ import java.util.List;
 /**
  * Created by Semyon Danilov on 11.04.2014.
  */
+
+/**
+ * Class for visualized algorithm tests
+ */
 public class GraphFrameTest implements Test {
 
     GraphFrame frame = null;
@@ -35,15 +39,20 @@ public class GraphFrameTest implements Test {
                         frame.setVisible(true);
                     }
         });
-//        /**
-//         * for test purposes, после теста удалить
-//         */
-//        EltechMap map = TestMapBuilder.buildHardMap();
-//
-//        PathFindingThread pft = new PathFindingThread(map, new MapRequestImpl(6, 750), null);
-//        pft.start();
+        /*
+
+          for test purposes
+
+            EltechMap map = TestMapBuilder.buildHardMap();
+
+            PathFindingThread pft = new PathFindingThread(map, new MapRequestImpl(6, 750), null);
+            pft.start();
+         */
     }
 
+    /**
+     * Thread that searches on the map
+     */
     private static class PathFindingThread extends Thread {
 
         Logger logger = Logger.getLogger(PathFindingThread.class);
@@ -69,8 +78,12 @@ public class GraphFrameTest implements Test {
                 frame.addPath(path);
             }
         }
+
     }
 
+    /**
+     * Frame with smooth graph animation
+     */
     public static class GraphFrame extends JFrame implements MouseListener, MouseMotionListener {
 
         private boolean needToUpdate = true;

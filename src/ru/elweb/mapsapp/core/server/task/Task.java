@@ -7,12 +7,22 @@ import ru.elweb.mapsapp.core.server.MapRequest;
 
 public interface Task {
 
+    /**
+     * Retrieve the client sent this task
+     * @return client
+     */
 	Client getClient();
-	
-	MapRequest getRequest();
 
+    /**
+     * The map where we are searching
+     * @return map
+     */
     EltechMap getMap();
 
+    /**
+     * Algorithm using for a search
+     * @return algorithm
+     */
     MapSearchAlgorithm getAlgorithm();
 	
 }

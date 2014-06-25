@@ -95,7 +95,7 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
 
         Long endTime = System.currentTimeMillis();
         LOGGER.log("Marking time: " + (endTime - startTime) + " ms");
-
+        startTime = endTime;
         while (currentNode.getId() != fromId) {
             List<Branch> branches = currentNode.getBranches();
             long curPathLen = currentNode.getDijkstraData().pathLen;

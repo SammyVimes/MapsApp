@@ -8,8 +8,9 @@ import ru.elweb.mapsapp.core.server.MapRequest;
 public class TaskImpl implements Task {
 
 	private Client client;
-	private MapRequest mapRequest;
+
     private EltechMap map;
+
     private MapSearchAlgorithm algorithm;
 	
 	public TaskImpl(final Client client, final EltechMap map, final MapSearchAlgorithm algorithm) {
@@ -21,11 +22,6 @@ public class TaskImpl implements Task {
 	@Override
 	public Client getClient() {
 		return client;
-	}
-
-	@Override
-	public MapRequest getRequest() {
-		return mapRequest;
 	}
 
     @Override

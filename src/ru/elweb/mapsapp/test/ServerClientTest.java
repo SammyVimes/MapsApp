@@ -38,6 +38,7 @@ public class ServerClientTest implements Test {
         server.setMap(map);
         server.runServer();
         executor.schedule(new Runnable() {
+
             @Override
             public void run() {
                 try {
@@ -57,6 +58,7 @@ public class ServerClientTest implements Test {
                     e.printStackTrace();
                 }
             }
+
         }, 2, TimeUnit.SECONDS);
 
     }
