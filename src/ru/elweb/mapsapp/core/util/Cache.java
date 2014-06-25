@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Cache<K, V> implements Map<K, V> {
 	
-	public static final long DEFAULT_TTL = 6000;
+	public static final long DEFAULT_TTL = 600000; //10 минут, нормально
 	public static final long DEFAULT_TTC = 60000;
 	
 	private long lastCleanTime = 0; 
@@ -62,6 +62,7 @@ public class Cache<K, V> implements Map<K, V> {
 		public CacheValue(final K key, final V data, final long ttl) {
 			this.key = key;
 			this.data = data;
+            this.ttl = ttl;
 			lastHitTime = new Date().getTime();
 		}
 		

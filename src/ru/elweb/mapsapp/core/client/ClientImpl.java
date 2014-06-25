@@ -76,7 +76,7 @@ public class ClientImpl implements Client {
             Integer toId = Integer.valueOf(query.getRequestParam("toID"));
             mapRequest = new MapRequestImpl(fromId, toId);
         } catch (IOException | MalformedQueryException e) {
-            e.printStackTrace();
+            throw new ServerException(e.getMessage());
         }
         return mapRequest;
     }

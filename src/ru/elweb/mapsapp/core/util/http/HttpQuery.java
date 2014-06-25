@@ -29,6 +29,9 @@ public class HttpQuery {
             return null;
         }
         int index = query.indexOf("?");
+        if (index == -1) {
+            throw new MalformedQueryException("There is no query in string: " + _query);
+        }
         query = query.substring(index + 1);
         String[] keysWithValues = query.split("&");
         for (int i = 0; i < keysWithValues.length; i++) {

@@ -1,6 +1,7 @@
 package ru.elweb.mapsapp.core.server;
 
-public class MapRequestImpl implements MapRequest {
+
+public class MapRequestImpl implements MapRequest{
 
 	private int fromID;
 	private int toID;
@@ -19,5 +20,19 @@ public class MapRequestImpl implements MapRequest {
 	public int getToID() {
 		return toID;
 	}
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof MapRequest)) {
+            return false;
+        }
+        MapRequest mr = (MapRequest) obj;
+        return fromID == mr.getFromID() && toID == mr.getToID();
+    }
+
+    @Override
+    public int hashCode() {
+        return fromID * 42 + toID * 24;
+    }
 
 }
