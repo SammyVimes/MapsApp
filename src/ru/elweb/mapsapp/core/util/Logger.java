@@ -22,7 +22,7 @@ public class Logger {
     public void log(final String tag, final String message) {
         Date date = new Date();
         String dateString = sdf.format(date);
-        String logMsg = "[" + dateString + "]" + (tag == null ? "" : ("[" + tag + "]")) + ": " + message;
+        String logMsg = "[" + dateString + "]" + (tag == null ? "" : ("[" + tag + "]")) + "[" + className + "]" + ": " + message;
         System.out.println(logMsg);
     }
 

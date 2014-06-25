@@ -18,22 +18,22 @@ import java.util.Set;
  */
 public class DijkstraAlgorithm implements MapSearchAlgorithm {
 
-    private Logger logger = Logger.getLogger(DijkstraAlgorithm.class);
+    private static Logger LOGGER = Logger.getLogger(DijkstraAlgorithm.class);
 
     //TODO: so we store our path. This means that if we get to dead end we could always walk back EXACTLY
     //TODO: the same way we got here. This is good: just walk back and see if prev nodes has unflagged branch nodes
     @Override
     @MethodDescription(link = "http://ru.wikipedia.org/wiki/%C0%EB%E3%EE%F0%E8%F2%EC_%C4%E5%E9%EA%F1%F2%F0%FB")
     public Path findPath(final EltechMap map, final int fromId, final int toId) {
-        Long startTime = System.nanoTime();
+        Long startTime = System.currentTimeMillis();
         DijkstraMapNode currentNode = (DijkstraMapNode) map.getNodeById(fromId);
         if (currentNode == null) {
-            logger.log("No node with such ID (" + fromId + "), aborting");
+            LOGGER.log("No node with such ID (" + fromId + "), aborting");
             return null;
         }
         DijkstraMapNode fnlNode = (DijkstraMapNode) map.getNodeById(toId);
         if (fnlNode == null) {
-            logger.log("No node with such ID (" + toId + "), aborting");
+            LOGGER.log("No node with such ID (" + toId + "), aborting");
             return null;
         }
         Path returnPath = new Path();
@@ -93,8 +93,8 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
         currentNode = finalNode;
         returnPath.addNode(finalNode);
 
-        Long endTime = System.nanoTime();
-        System.out.println("Marking time: " + (endTime - startTime) + " ns");
+        Long endTime = System.currentTimeMillis();
+        LOGGER.log("Marking time: " + (endTime - startTime) + " ms");
 
         while (currentNode.getId() != fromId) {
             List<Branch> branches = currentNode.getBranches();
@@ -113,8 +113,8 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
             DijkstraMapNode dijkstraMapNode = (DijkstraMapNode) node;
             dijkstraMapNode.removeDijkstraData();
         }
-        endTime = System.nanoTime();
-        System.out.println("Path finding time: " + (endTime - startTime) + " ns");
+        endTime = System.currentTimeMillis();
+        LOGGER.log("Path finding time: " + (endTime - startTime) + " ms");
         return returnPath;
     }
 

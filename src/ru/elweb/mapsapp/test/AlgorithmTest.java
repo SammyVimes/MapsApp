@@ -4,6 +4,7 @@ import ru.elweb.mapsapp.core.algorithm.MapSearchAlgorithm;
 import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.map.node.MapNode;
+import ru.elweb.mapsapp.core.util.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
  * Created by  Semyon Danilov on 05.04.2014.
  */
 public class AlgorithmTest implements Test {
+
+    private static Logger LOGGER = Logger.getLogger(AlgorithmTest.class);
 
     private MapSearchAlgorithm algorithm;
     private EltechMap map;
@@ -31,9 +34,9 @@ public class AlgorithmTest implements Test {
         Path path = algorithm.findPath(map, fromId, toId);
         List<MapNode> nodes = path.getNodes();
         Collections.reverse(path.getNodes());
-        System.out.println("Finding path from " + fromId + " to " + toId);
+        LOGGER.log("Finding path from " + fromId + " to " + toId);
         for (final MapNode node : nodes) {
-            System.out.println("Node: " + node.getId());
+            LOGGER.log("Node: " + node.getId());
         }
     }
 

@@ -32,7 +32,13 @@ public class ClientImpl implements Client {
         }
         String pathString = path.toString();
         try {
-            stream.write(pathString.getBytes());
+            stream.write("HTTP/1.1 200 OK\\r\\n".getBytes());
+            byte[] response = pathString.getBytes();
+            int len = response.length;
+            stream.write(String.valueOf("Content-Length: " + len + "\r\n").getBytes());
+            stream.write("Content-Type: text/html\r\n\r\n\r\n".getBytes());
+            stream.write(response);
+            stream.flush();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
