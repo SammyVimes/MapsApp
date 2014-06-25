@@ -5,7 +5,6 @@ import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraFactory;
 import ru.elweb.mapsapp.core.annotation.TestImage;
 import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.map.node.Branch;
-import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
 import ru.elweb.mapsapp.core.map.node.MapNode;
 
 import java.util.LinkedList;
@@ -15,10 +14,10 @@ import java.util.Random;
 public final class TestMapBuilder {
 
     static Factory factory = new DijkstraFactory();
-	
-	static EltechMap newEltechMap() {
-		return null;
-	}
+
+    static EltechMap newEltechMap() {
+        return null;
+    }
 
     @TestImage("http://upload.wikimedia.org/wikipedia/commons/5/55/Dijkstra_graph3.PNG")
     public static EltechMap buildSimpleMap() {
@@ -117,5 +116,5 @@ public final class TestMapBuilder {
         }
         return map;
     }
-	
+
 }

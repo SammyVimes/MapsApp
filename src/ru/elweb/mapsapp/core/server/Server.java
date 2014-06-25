@@ -10,12 +10,13 @@ public interface Server {
     /**
      * Start the server
      */
-	void runServer();
+    void runServer();
 
     /**
      * Set the map that will be used for searching by this server
+     *
      * @param map
      */
     void setMap(final EltechMap map);
-	
+
 }

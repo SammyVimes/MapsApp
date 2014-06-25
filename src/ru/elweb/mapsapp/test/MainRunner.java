@@ -11,9 +11,10 @@ public class MainRunner {
 
     /**
      * Starter of tests
+     *
      * @param args
      */
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         EltechMap map = TestMapBuilder.buildSimpleMap();
         Test test = new AlgorithmTest(new DijkstraAlgorithm(), map, 1, 5);
         LOGGER.log("******** Starting algorithm test ********");
@@ -21,6 +22,6 @@ public class MainRunner {
         LOGGER.log("******** Starting server&client test ********");
         (new ServerClientTest()).run();
         (new GraphFrameTest()).run();
-	}
-	
+    }
+
 }

@@ -9,7 +9,6 @@ import ru.elweb.mapsapp.core.server.MapRequestImpl;
 import ru.elweb.mapsapp.core.util.Logger;
 import ru.elweb.mapsapp.test.Test;
 import ru.elweb.mapsapp.test.TestMapBuilder;
-import sun.util.logging.resources.logging;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +37,7 @@ public class GraphFrameTest implements Test {
                         frame = new GraphFrame(map, Graph.fromEltechMap(map));
                         frame.setVisible(true);
                     }
-        });
+                });
         /*
 
           for test purposes
@@ -146,7 +145,7 @@ public class GraphFrameTest implements Test {
                         continue;
                     }
                     Vertex u = vertices.get(j);
-                    double rsq = ((v.x - u.x) * (v.x - u.x) +(v.y - u.y) * (v.y - u.y));
+                    double rsq = ((v.x - u.x) * (v.x - u.x) + (v.y - u.y) * (v.y - u.y));
                     v.netForceX += (200 * (v.x - u.x)) / rsq;
                     v.netForceY += (200 * (v.y - u.y)) / rsq;
                 }
@@ -164,7 +163,7 @@ public class GraphFrameTest implements Test {
                     v.netForceY += 0.06 * (u.y - v.y);
                 }
                 v.velocityX = (v.velocityX + v.netForceX) * 0.85;
-                v.velocityY= (v.velocityY + v.netForceY) * 0.85;
+                v.velocityY = (v.velocityY + v.netForceY) * 0.85;
             }
             for (int i = 0; i < verticesQuantity; i++) {
                 Vertex vertex = vertices.get(i);
@@ -337,8 +336,8 @@ public class GraphFrameTest implements Test {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent e) {
-                    Integer fromId =  Integer.valueOf(from.getText());
-                    Integer toId =  Integer.valueOf(to.getText());
+                    Integer fromId = Integer.valueOf(from.getText());
+                    Integer toId = Integer.valueOf(to.getText());
                     MapRequest mapRequest = new MapRequestImpl(fromId, toId);
                     PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, GraphFrame.this);
                     pathFindingThread.start();
@@ -418,7 +417,6 @@ public class GraphFrameTest implements Test {
         }
 
     }
-
 
 
 }

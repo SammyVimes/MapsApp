@@ -9,6 +9,7 @@ public interface MapParser {
 
     /**
      * Parse the map file
+     *
      * @param filePath path to xml
      * @return parsed map
      */

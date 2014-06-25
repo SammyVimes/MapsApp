@@ -8,7 +8,7 @@ public class Branch {
     protected int length;
     protected MapNode node;
 
-    public  Branch(final int length, final MapNode node) {
+    public Branch(final int length, final MapNode node) {
         this.length = length;
         this.node = node;
     }

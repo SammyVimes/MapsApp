@@ -21,8 +21,8 @@ public class ClientImpl implements Client {
         this.clientSocket = socket;
     }
 
-	@Override
-	public boolean sendData(Path path) {
+    @Override
+    public boolean sendData(Path path) {
         OutputStream stream = null;
         try {
             stream = clientSocket.getOutputStream();
@@ -50,21 +50,21 @@ public class ClientImpl implements Client {
             }
         }
         return true;
-	}
+    }
 
-	@Override
-	public boolean sendInfo(String info) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public boolean sendInfo(String info) {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-	@Override
-	public MapRequest getRequest() throws ServerException {
+    @Override
+    public MapRequest getRequest() throws ServerException {
         InputStream stream = null;
         MapRequest mapRequest = null;
         try {
             stream = clientSocket.getInputStream();
-            byte buf[] = new byte[64*1024];
+            byte buf[] = new byte[64 * 1024];
             int a = stream.read(buf);
             if (a == -1) {
                 throw new ServerException("Can't read clients request");

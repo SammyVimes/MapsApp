@@ -1,25 +1,25 @@
 package ru.elweb.mapsapp.core.server;
 
 
-public class MapRequestImpl implements MapRequest{
+public class MapRequestImpl implements MapRequest {
 
-	private int fromID;
-	private int toID;
-	
-	public MapRequestImpl(final int fromID, final int toID) {
-		this.fromID = fromID;
-		this.toID = toID;
-	}
-	
-	@Override
-	public int getFromID() {
-		return fromID;
-	}
+    private int fromID;
+    private int toID;
 
-	@Override
-	public int getToID() {
-		return toID;
-	}
+    public MapRequestImpl(final int fromID, final int toID) {
+        this.fromID = fromID;
+        this.toID = toID;
+    }
+
+    @Override
+    public int getFromID() {
+        return fromID;
+    }
+
+    @Override
+    public int getToID() {
+        return toID;
+    }
 
     @Override
     public boolean equals(final Object obj) {

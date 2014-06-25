@@ -13,6 +13,7 @@ public interface ClientFactory {
 
     /**
      * Creating a client for a socket
+     *
      * @param socket client's socket
      * @return client
      */

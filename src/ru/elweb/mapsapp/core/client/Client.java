@@ -8,23 +8,26 @@ public interface Client {
 
     /**
      * Send path response to client
+     *
      * @param path
      * @return
      */
-	boolean sendData(final Path path);
+    boolean sendData(final Path path);
 
     /**
      * Send custom string to client (for example error)
+     *
      * @param info
      * @return
      */
-	boolean sendInfo(final String info);
+    boolean sendInfo(final String info);
 
     /**
      * Extract request from clients input
+     *
      * @return MapRequest
      * @throws ServerException if query is malformed
      */
-	MapRequest getRequest() throws ServerException;
-	
+    MapRequest getRequest() throws ServerException;
+
 }

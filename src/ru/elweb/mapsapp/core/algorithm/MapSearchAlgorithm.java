@@ -14,9 +14,10 @@ public interface MapSearchAlgorithm {
 
     /**
      * The main, the only purpose of all of this a bit complicated stuff: THE SEARCH
+     *
      * @param map
      * @param fromId from where to search
-     * @param toId till where to search
+     * @param toId   till where to search
      * @return path between nodes
      */
     Path findPath(final EltechMap map, final int fromId, final int toId);

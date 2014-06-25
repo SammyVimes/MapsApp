@@ -17,6 +17,7 @@ public class Logger {
 
     /**
      * Log the message
+     *
      * @param message
      */
     public void log(final String message) {
@@ -25,7 +26,8 @@ public class Logger {
 
     /**
      * Log the message
-     * @param tag additional TAG for a log message (for example ID of a thread)
+     *
+     * @param tag     additional TAG for a log message (for example ID of a thread)
      * @param message
      */
     public void log(final String tag, final String message) {
@@ -37,6 +39,7 @@ public class Logger {
 
     /**
      * Log the error
+     *
      * @param errorMessage
      */
     public void error(final String errorMessage) {
@@ -45,6 +48,7 @@ public class Logger {
 
     /**
      * Get logger with class name of loggable specified
+     *
      * @param className loggable class's classname
      * @return logger
      */

@@ -16,7 +16,7 @@ public class ServerOptions {
         this.host = host;
     }
 
-    public  void setPort(final int port) {
+    public void setPort(final int port) {
         this.port = port;
     }
 

@@ -28,38 +28,38 @@ public class ServerImpl implements Server {
         this.clientFactory = clientFactory;
     }
 
-	@Override
-	public void runServer() {
-		Thread serverThread = new ServerThread();
+    @Override
+    public void runServer() {
+        Thread serverThread = new ServerThread();
         serverThread.start();
-	}
+    }
 
     @Override
     public void setMap(final EltechMap map) {
         this.map = map;
     }
-	
-	private final class ServerThread extends Thread {
-		
-		private static final String TAG = "ServerThread";
-		private static final int DEFAULT_MAX_CONNECTIONS = 40;
-		private final int maxConnections;
+
+    private final class ServerThread extends Thread {
+
+        private static final String TAG = "ServerThread";
+        private static final int DEFAULT_MAX_CONNECTIONS = 40;
+        private final int maxConnections;
 
         private boolean isAcceptingClients = true;
 
         private ServerSocket serverSocket = null;
-		
-		public ServerThread(final int maxConnections) {
-			this.maxConnections = maxConnections;
+
+        public ServerThread(final int maxConnections) {
+            this.maxConnections = maxConnections;
             setDaemon(true);
-		}
-		
-		public ServerThread() {
-			this.maxConnections = DEFAULT_MAX_CONNECTIONS;
-		}
-		
-		@Override
-		public void run() {
+        }
+
+        public ServerThread() {
+            this.maxConnections = DEFAULT_MAX_CONNECTIONS;
+        }
+
+        @Override
+        public void run() {
             LOGGER.log("Creating server socket, options = " + serverOptions.toString());
             try {
                 serverSocket = new ServerSocket(serverOptions.port, 0, InetAddress.getByName(serverOptions.host));
@@ -88,8 +88,8 @@ public class ServerImpl implements Server {
                 e.printStackTrace();
             }
             LOGGER.log("Server stopped");
-		}
-		
-	}
+        }
+
+    }
 
 }

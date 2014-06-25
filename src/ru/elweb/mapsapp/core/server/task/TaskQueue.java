@@ -10,9 +10,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class TaskQueue {
 
-	private static TaskQueue instance;
-	
-	private Queue<Task> queue = new LinkedList<>();
+    private static TaskQueue instance;
+
+    private Queue<Task> queue = new LinkedList<>();
 
     private Lock lock = new ReentrantLock();
 
@@ -25,14 +25,14 @@ public class TaskQueue {
         }
     }
 
-	public static TaskQueue getInstance() {
-		if (instance == null) {
-			instance = new TaskQueue();
-		}
-		return instance;
-	}
-	
-	public void addTask(final Task task) {
+    public static TaskQueue getInstance() {
+        if (instance == null) {
+            instance = new TaskQueue();
+        }
+        return instance;
+    }
+
+    public void addTask(final Task task) {
         lock.lock();
         try {
             queue.add(task);
@@ -42,19 +42,19 @@ public class TaskQueue {
         synchronized (this) {
             notifyAll();
         }
-	}
-	
-	public Task getTask() {
+    }
+
+    public Task getTask() {
         lock.lock();
         try {
             return queue.remove();
         } finally {
             lock.unlock();
         }
-	}
-	
-	private TaskQueue() {
+    }
 
-	}
-	
+    private TaskQueue() {
+
+    }
+
 }
