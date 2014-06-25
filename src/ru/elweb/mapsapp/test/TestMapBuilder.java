@@ -78,7 +78,7 @@ public final class TestMapBuilder {
         EltechMap map = new EltechMap();
         Random random = new Random();
         List<MapNode> nodes = new LinkedList<>();
-        int n = 3000;
+        int n = 100;
         for (int i = 0; i < n; i++) {
             MapNode node = new DijkstraMapNode(i, false);
             nodes.add(node);

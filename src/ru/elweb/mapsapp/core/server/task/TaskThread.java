@@ -2,8 +2,12 @@ package ru.elweb.mapsapp.core.server.task;
 
 import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.server.MapRequest;
+import ru.elweb.mapsapp.core.server.ServerException;
+import ru.elweb.mapsapp.core.util.Logger;
 
 public class TaskThread extends Thread {
+
+    private static Logger LOGGER = Logger.getLogger(TaskThread.class);
 
 	private Task task;
 
@@ -13,14 +17,21 @@ public class TaskThread extends Thread {
 	
 	@Override
 	public void run() {
-        MapRequest mapRequest = task.getClient().getRequest();
+        MapRequest mapRequest = null;
+        try {
+            mapRequest = task.getClient().getRequest();
+        } catch (ServerException e) {
+            LOGGER.log(e.getMessage());
+        }
         Path path = task.getAlgorithm().findPath(task.getMap(), mapRequest.getFromID(), mapRequest.getToID());
-        path.toString();
+        deliver(path);
 	}
 	
 	public boolean deliver(final Path path) {
-		//TODO: impl
-		return false;
+        if (path == null) {
+            return false;
+        }
+		return task.getClient().sendData(path);
 	}
 	
 }

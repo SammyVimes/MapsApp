@@ -2,18 +2,30 @@ package ru.elweb.mapsapp.test;
 
 import ru.elweb.mapsapp.core.algorithm.dijkstra.DijkstraAlgorithm;
 import ru.elweb.mapsapp.core.client.ClientFactoryImpl;
+import ru.elweb.mapsapp.core.map.EltechMap;
 import ru.elweb.mapsapp.core.server.Server;
 import ru.elweb.mapsapp.core.server.ServerImpl;
 import ru.elweb.mapsapp.core.server.ServerOptions;
+import ru.elweb.mapsapp.core.util.Logger;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Semyon Danilov on 08.04.2014.
  */
 public class ServerClientTest implements Test {
+
+    private static final Logger LOGGER = Logger.getLogger(ServerClientTest.class);
+
+    ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
 
     @Override
     public void run() {
@@ -22,22 +34,26 @@ public class ServerClientTest implements Test {
         options.setPort(8080);
         options.setAlgorithm(new DijkstraAlgorithm());
         Server server = new ServerImpl(options, new ClientFactoryImpl());
-        server.setMap(TestMapBuilder.buildSimpleMap());
+        EltechMap map = TestMapBuilder.buildHardMap();
+        LOGGER.log("Generated map with " + map.getNodes().size() + " nodes. Type in your browser: http://localhost:8080/?fromId={From where to search}&toId={Search For}");
+        server.setMap(map);
         server.runServer();
-
-        (new Thread() {
-
-            @Override
-            public void run() {
-                try {
-                    URLConnection connection = new URL("http://localhost:8080/?foobar=sos").openConnection();
-                    connection.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }).start();
+//        executor.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    URLConnection connection = new URL("http://localhost:8080/?fromId=1&toId=2").openConnection();
+//                    connection.setDoOutput(true);
+//
+//                    OutputStreamWriter out = new OutputStreamWriter(
+//                            connection.getOutputStream());
+//                    out.write("");
+//                    out.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, 2, TimeUnit.SECONDS);
 
     }
 

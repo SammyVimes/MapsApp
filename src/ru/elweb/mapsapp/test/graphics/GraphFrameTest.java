@@ -6,14 +6,14 @@ import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.map.node.MapNode;
 import ru.elweb.mapsapp.core.server.MapRequest;
 import ru.elweb.mapsapp.core.server.MapRequestImpl;
+import ru.elweb.mapsapp.core.util.Logger;
 import ru.elweb.mapsapp.test.Test;
 import ru.elweb.mapsapp.test.TestMapBuilder;
+import sun.util.logging.resources.logging;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.List;
 
 /**
@@ -22,24 +22,32 @@ import java.util.List;
 public class GraphFrameTest implements Test {
 
     GraphFrame frame = null;
+    Logger logger = Logger.getLogger(GraphFrameTest.class);
 
     @Override
     public void run() {
-//        SwingUtilities.invokeLater(() -> {
-//            EltechMap map = TestMapBuilder.buildHardMap();
-//            frame = new GraphFrame(map, Graph.fromEltechMap(map));
-//            frame.setVisible(true);
-//        });
-        /**
-         * for test purposes
-         */
-        EltechMap map = TestMapBuilder.buildHardMap();
-
-        PathFindingThread pft = new PathFindingThread(map, new MapRequestImpl(6, 750), null);
-        pft.start();
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        EltechMap map = TestMapBuilder.buildHardMap();
+                        frame = new GraphFrame(map, Graph.fromEltechMap(map));
+                        frame.setVisible(true);
+                    }
+        });
+//        /**
+//         * for test purposes, после теста удалить
+//         */
+//        EltechMap map = TestMapBuilder.buildHardMap();
+//
+//        PathFindingThread pft = new PathFindingThread(map, new MapRequestImpl(6, 750), null);
+//        pft.start();
     }
 
     private static class PathFindingThread extends Thread {
+
+        Logger logger = Logger.getLogger(PathFindingThread.class);
+
 
         private EltechMap map = null;
         private MapRequest mapRequest = null;
@@ -56,8 +64,10 @@ public class GraphFrameTest implements Test {
         public void run() {
             DijkstraAlgorithm algorithm = new DijkstraAlgorithm();
             Path path = algorithm.findPath(map, mapRequest.getFromID(), mapRequest.getToID());
-            System.out.println("Path: " + path.toString());
-   //         frame.addPath(path);
+            if (path != null) {
+                logger.log("Path: " + path.toString());
+                frame.addPath(path);
+            }
         }
     }
 
@@ -156,10 +166,13 @@ public class GraphFrameTest implements Test {
 
         public GraphFrame(final EltechMap map, final Graph graph) {
             super("Graph Frame");
-            updateTimer = new Timer(50, e -> {
-                repaint();
-                if (needToUpdate) {
-                    updateTimer.restart();
+            updateTimer = new Timer(50, new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent e) {
+                    repaint();
+                    if (needToUpdate) {
+                        updateTimer.restart();
+                    }
                 }
             });
             this.map = map;
@@ -308,12 +321,15 @@ public class GraphFrameTest implements Test {
             status = new JLabel();
             jLabel1 = new JLabel();
             JButton button = new JButton("Найти путь");
-            button.addActionListener(e -> {
-                Integer fromId =  Integer.valueOf(from.getText());
-                Integer toId =  Integer.valueOf(to.getText());
-                MapRequest mapRequest = new MapRequestImpl(fromId, toId);
-                PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, this);
-                pathFindingThread.start();
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent e) {
+                    Integer fromId =  Integer.valueOf(from.getText());
+                    Integer toId =  Integer.valueOf(to.getText());
+                    MapRequest mapRequest = new MapRequestImpl(fromId, toId);
+                    PathFindingThread pathFindingThread = new PathFindingThread(map, mapRequest, GraphFrame.this);
+                    pathFindingThread.start();
+                }
             });
             setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

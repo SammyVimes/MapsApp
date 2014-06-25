@@ -7,6 +7,7 @@ import ru.elweb.mapsapp.core.map.Path;
 import ru.elweb.mapsapp.core.map.node.Branch;
 import ru.elweb.mapsapp.core.map.node.DijkstraMapNode;
 import ru.elweb.mapsapp.core.map.node.MapNode;
+import ru.elweb.mapsapp.core.util.Logger;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Set;
  */
 public class DijkstraAlgorithm implements MapSearchAlgorithm {
 
+    private Logger logger = Logger.getLogger(DijkstraAlgorithm.class);
+
     //TODO: so we store our path. This means that if we get to dead end we could always walk back EXACTLY
     //TODO: the same way we got here. This is good: just walk back and see if prev nodes has unflagged branch nodes
     @Override
@@ -24,6 +27,15 @@ public class DijkstraAlgorithm implements MapSearchAlgorithm {
     public Path findPath(final EltechMap map, final int fromId, final int toId) {
         Long startTime = System.nanoTime();
         DijkstraMapNode currentNode = (DijkstraMapNode) map.getNodeById(fromId);
+        if (currentNode == null) {
+            logger.log("No node with such ID (" + fromId + "), aborting");
+            return null;
+        }
+        DijkstraMapNode fnlNode = (DijkstraMapNode) map.getNodeById(toId);
+        if (fnlNode == null) {
+            logger.log("No node with such ID (" + toId + "), aborting");
+            return null;
+        }
         Path returnPath = new Path();
         currentNode.getDijkstraData().pathLen = 0;
         DijkstraMapNode finalNode = null;

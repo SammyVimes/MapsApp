@@ -6,8 +6,6 @@ import java.util.Queue;
 public class TaskQueue {
 
 	private static TaskQueue instance;
-
-    private Object monitor = new Object();
 	
 	private Queue<Task> queue = new LinkedList<>();
 
@@ -21,16 +19,10 @@ public class TaskQueue {
 		}
 		return instance;
 	}
-
-    public Object getMonitor() {
-        return monitor;
-    }
 	
 	public synchronized void addTask(final Task task) {
 		queue.add(task);
-        synchronized (monitor) {
-            monitor.notifyAll();
-        }
+        notifyAll();
 	}
 	
 	public synchronized Task getTask() {

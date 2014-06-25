@@ -12,12 +12,11 @@ public class TaskThreadRunner extends Thread {
     @Override
     public void run() {
         TaskQueue taskQueue = TaskQueue.getInstance();
-        Object monitor = taskQueue.getMonitor();
         while (true) {
-            synchronized (monitor) {
+            synchronized (taskQueue) {
                 while (taskQueue.isEmpty()) {
                     try {
-                        monitor.wait();
+                        taskQueue.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
