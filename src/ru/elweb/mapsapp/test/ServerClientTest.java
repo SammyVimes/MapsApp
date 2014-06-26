@@ -33,7 +33,7 @@ public class ServerClientTest implements Test {
         options.setPort(8080);
         options.setAlgorithm(new DijkstraAlgorithm());
         Server server = new ServerImpl(options, new ClientFactoryImpl());
-        EltechMap map = TestMapBuilder.buildHardMap();
+        EltechMap map = TestMapBuilder.getHardMap();
         LOGGER.log("Generated map with " + map.getNodes().size() + " nodes. Type in your browser: http://localhost:8080/?fromId={From where to search}&toId={Search For}");
         LOGGER.log("e.g. http://localhost:8080/?fromID=25&toID=52");
         LOGGER.log("In this test I create a client manually to find a way from 25 to 52 and receive the path, see output in console in 2 seconds");

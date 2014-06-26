@@ -73,6 +73,15 @@ public final class TestMapBuilder {
         return map;
     }
 
+    private static EltechMap hardMap = null;
+
+    public synchronized static EltechMap getHardMap() {
+        if (hardMap == null) {
+            hardMap = buildHardMap();
+        }
+        return hardMap;
+    }
+
     public static EltechMap buildHardMap() {
         EltechMap map = new EltechMap();
         Random random = new Random();

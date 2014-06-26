@@ -33,7 +33,7 @@ public class GraphFrameTest implements Test {
                 new Runnable() {
                     @Override
                     public void run() {
-                        EltechMap map = TestMapBuilder.buildHardMap();
+                        EltechMap map = TestMapBuilder.getHardMap();
                         frame = new GraphFrame(map, Graph.fromEltechMap(map));
                         frame.setVisible(true);
                     }
